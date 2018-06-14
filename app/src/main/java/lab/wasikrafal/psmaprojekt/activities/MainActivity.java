@@ -1,5 +1,6 @@
 package lab.wasikrafal.psmaprojekt.activities;
 
+import android.app.Fragment;
 import android.os.Bundle;
 import android.app.FragmentTransaction;
 import android.support.annotation.NonNull;
@@ -11,18 +12,17 @@ import android.view.MenuItem;
 
 import lab.wasikrafal.psmaprojekt.R;
 import lab.wasikrafal.psmaprojekt.database.MediaDatabase;
+import lab.wasikrafal.psmaprojekt.fragments.AudioCategorySettingsFragment;
 import lab.wasikrafal.psmaprojekt.fragments.AudioListFragment;
 import lab.wasikrafal.psmaprojekt.fragments.AudioRecorderFragment;
+import lab.wasikrafal.psmaprojekt.fragments.SettingsFragment;
 import lab.wasikrafal.psmaprojekt.fragments.VideoListFragment;
 import lab.wasikrafal.psmaprojekt.fragments.VideoRecorderFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener
 {
-    VideoRecorderFragment videoRecorderFragment;
-    AudioRecorderFragment audioRecorderFragment;
-    AudioListFragment audioListFragment;
-    VideoListFragment videoListFragment;
+    Fragment currentFragment;
     MediaDatabase database;
 
     @Override
@@ -38,18 +38,29 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        videoRecorderFragment = new VideoRecorderFragment();
-        audioRecorderFragment = new AudioRecorderFragment();
-        audioListFragment = new AudioListFragment();
-        videoListFragment = new VideoListFragment();
-        startVideoListFragment();
+
+        if (savedInstanceState != null) {
+            currentFragment = getFragmentManager().getFragment(savedInstanceState, "currFrag");
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_container, currentFragment);
+            //transaction.addToBackStack(null);
+            transaction.commit();
+        } else {
+            startVideoListFragment();
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState)
+    {
+        super.onSaveInstanceState(outState);
+        getFragmentManager().putFragment(outState, "currFrag", currentFragment);
     }
 
     private void setDatabase()
     {
         database = MediaDatabase.getInstance(this);
-        //database = Room.databaseBuilder(getApplicationContext(), MediaDatabase.class, "mediaDatabase").build();
-    }
+   }
 
     @Override
     public void onBackPressed()
@@ -71,7 +82,7 @@ public class MainActivity extends AppCompatActivity
             startVideoRecorderFragment();
         } else if (id == R.id.nav_mic) {
             startAudioRecorderFragment();
-        }  else if (id == R.id.nav_aud_list) {
+        } else if (id == R.id.nav_aud_list) {
             startAudioListFragment();
         } else if (id == R.id.nav_vid_list) {
             startVideoListFragment();
@@ -91,47 +102,54 @@ public class MainActivity extends AppCompatActivity
     private void startVideoRecorderFragment()
     {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-
-        transaction.replace(R.id.fragment_container, videoRecorderFragment);
-        transaction.addToBackStack(null);
-
+        currentFragment = new VideoRecorderFragment();
+        transaction.replace(R.id.fragment_container, currentFragment);
+        //transaction.addToBackStack(null);
         transaction.commit();
     }
 
     private void startAudioRecorderFragment()
     {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, audioRecorderFragment);
-        transaction.addToBackStack(null);
-
+        currentFragment = new AudioRecorderFragment();
+        transaction.replace(R.id.fragment_container, currentFragment);
+        //transaction.addToBackStack(null);
         transaction.commit();
     }
 
     private void startAudioListFragment()
     {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, audioListFragment);
-        transaction.addToBackStack(null);
-
+        currentFragment = new AudioListFragment();
+        transaction.replace(R.id.fragment_container, currentFragment);
+        //transaction.addToBackStack(null);
         transaction.commit();
     }
 
     private void startVideoListFragment()
     {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, videoListFragment);
-        transaction.addToBackStack(null);
-
+        currentFragment = new VideoListFragment();
+        transaction.replace(R.id.fragment_container, currentFragment);
+        //transaction.addToBackStack(null);
         transaction.commit();
     }
 
     private void startCategorySettingsFragment()
     {
-
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        currentFragment = new AudioCategorySettingsFragment();
+        transaction.replace(R.id.fragment_container, currentFragment);
+        //transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     private void startSettingsFragment()
     {
-
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        currentFragment = new SettingsFragment();
+        transaction.replace(R.id.fragment_container, currentFragment);
+        //transaction.addToBackStack(null);
+        transaction.commit();
     }
 }

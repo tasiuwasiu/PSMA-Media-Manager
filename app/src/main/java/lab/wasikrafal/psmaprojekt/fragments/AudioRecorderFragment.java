@@ -3,9 +3,8 @@ package lab.wasikrafal.psmaprojekt.fragments;
 import android.Manifest;
 import android.app.Dialog;
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.arch.persistence.room.Room;
-import android.arch.persistence.room.RoomDatabase;
-import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -18,8 +17,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,11 +32,12 @@ import lab.wasikrafal.psmaprojekt.models.Recording;
 
 public class AudioRecorderFragment extends Fragment
 {
-    MediaRecorder mediaRecorder;
+
     private String [] permissions = {Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE};
     MediaDatabase database;
     String path;
-    long length;
+    boolean isRecording = false;
+    AudioRecorderServiceFragment audioRecorderServiceFragment;
 
     @Override
     public void onCreate(Bundle bundle)
@@ -48,8 +46,18 @@ public class AudioRecorderFragment extends Fragment
         int resCode=0;
         requestPermissions( permissions, resCode);
         database = Room.databaseBuilder(getActivity().getApplicationContext(), MediaDatabase.class, "mediaDatabase").allowMainThreadQueries().build();
-    }
 
+        if (getFragmentManager().findFragmentByTag("service_fragment") == null)
+        {
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            audioRecorderServiceFragment = new AudioRecorderServiceFragment();
+            ft.add(audioRecorderServiceFragment, "service_fragment").commit();
+        }
+        else
+        {
+            audioRecorderServiceFragment = (AudioRecorderServiceFragment) getFragmentManager().findFragmentByTag("service_fragment");
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,10 +67,14 @@ public class AudioRecorderFragment extends Fragment
         View view = inflater.inflate(R.layout.fragment_audio_recorder, container, false);
         final Button record = (Button) view.findViewById(R.id.but_aud_rec);
         final TextView status = (TextView) view.findViewById(R.id.tv_audio_recording_status);
+        if (audioRecorderServiceFragment.isRecording())
+        {
+            isRecording = true;
+            record.setText(R.string.aud_rec_stop_recording);
+            status.setText(R.string.aud_rec_recording);
+        }
         record.setOnClickListener(new View.OnClickListener()
         {
-            boolean isRecording = false;
-
             @Override
             public void onClick(View view)
             {
@@ -101,36 +113,16 @@ public class AudioRecorderFragment extends Fragment
             e.printStackTrace();
         }
         path = audiofile.getAbsolutePath();
-        mediaRecorder = new MediaRecorder();
-        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-        mediaRecorder.setOutputFile(path);
-        Log.d("path", path);
-        try
-        {
-            mediaRecorder.prepare();
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-
-        mediaRecorder.start();
-        length = System.currentTimeMillis();
+        audioRecorderServiceFragment.startRecording(path);
     }
 
     private void stopRecording()
     {
-        mediaRecorder.stop();
-        mediaRecorder.reset();
-        mediaRecorder.release();
-        mediaRecorder = null;
-        length = System.currentTimeMillis() - length;
+        audioRecorderServiceFragment.stopRecording();
         final Recording recording = new Recording();
-        recording.filename = path;
+        recording.filename = audioRecorderServiceFragment.getPath();
         recording.date = new Date();
-        recording.length = length;
+        recording.length = audioRecorderServiceFragment.getLength();
 
         final Dialog dialog = new Dialog(getActivity());
         dialog.setContentView(R.layout.dialog_audio_recorded);
@@ -164,11 +156,7 @@ public class AudioRecorderFragment extends Fragment
     public void onStop()
     {
         super.onStop();
-        if (mediaRecorder!= null)
-        {
-            mediaRecorder.release();
-            mediaRecorder = null;
-        }
+
     }
 
 }
