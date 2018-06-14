@@ -1,15 +1,17 @@
-package lab.wasikrafal.psmaprojekt;
+package lab.wasikrafal.psmaprojekt.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class VideoPlayerActivity extends AppCompatActivity
+import lab.wasikrafal.psmaprojekt.R;
+
+public class AudioPlayerActivity extends AppCompatActivity
 {
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_video_player);
+        setContentView(R.layout.activity_audio_player);
     }
 }

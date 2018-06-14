@@ -1,10 +1,12 @@
-package lab.wasikrafal.psmaprojekt;
+package lab.wasikrafal.psmaprojekt.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+
+import lab.wasikrafal.psmaprojekt.R;
 
 public class IntroActivity extends AppCompatActivity
 {

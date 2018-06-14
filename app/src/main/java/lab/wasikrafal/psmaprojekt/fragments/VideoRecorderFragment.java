@@ -1,4 +1,4 @@
-package lab.wasikrafal.psmaprojekt;
+package lab.wasikrafal.psmaprojekt.fragments;
 
 import android.Manifest;
 import android.app.Fragment;
@@ -20,11 +20,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import lab.wasikrafal.psmaprojekt.R;
+
 public class VideoRecorderFragment extends Fragment
 {
     MediaRecorder mediaRecorder;
     Camera camera;
-    Preview preview;
+
 
     private String [] permissions = {Manifest.permission.RECORD_AUDIO, Manifest.permission.CAPTURE_VIDEO_OUTPUT, Manifest.permission.CAMERA};
 
@@ -67,7 +69,6 @@ public class VideoRecorderFragment extends Fragment
             }
         });
 
-        preview = view.findViewById(R.id.preview);
         return view;
 
     }
@@ -76,14 +77,13 @@ public class VideoRecorderFragment extends Fragment
     {
         Calendar currentTime = Calendar.getInstance();
         SimpleDateFormat time = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.ENGLISH);
-        String filePath = MainActivity.PATH + time.format(currentTime.getTime());
+        String filePath =  time.format(currentTime.getTime());
 
         mediaRecorder = new MediaRecorder();
         mediaRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
         mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.MPEG_4_SP);
         mediaRecorder.setOutputFile(filePath);
-        mediaRecorder.setPreviewDisplay(preview.holder.getSurface());
 
         try
         {
