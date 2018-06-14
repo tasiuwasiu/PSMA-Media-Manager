@@ -50,7 +50,7 @@ public class CarouselPagerAdapter extends PagerAdapter
         imageView.setImageResource(images[position]);
 
         TextView textView = itemView.findViewById(R.id.textView2);
-        textView.setText("Krok " + (position+1));
+        textView.setText("Obraz " + (position+1) + " z " + images.length);
 
         container.addView(itemView);
 

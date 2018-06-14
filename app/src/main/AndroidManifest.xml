@@ -11,7 +11,7 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label="Media Manager"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -28,9 +28,11 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
-        <activity android:name=".activities.VideoPlayerActivity">
+        <activity android:name=".activities.VideoPlayerActivity"
+            android:label="Odtwarzacz Filmów">
         </activity>
-        <activity android:name=".activities.AudioPlayerActivity">
+        <activity android:name=".activities.AudioPlayerActivity"
+            android:label="Odtwarzacz Dźwięku">
         </activity>
 
     </application>

@@ -1,8 +1,5 @@
 package lab.wasikrafal.psmaprojekt.activities;
 
-import android.arch.persistence.db.SupportSQLiteDatabase;
-import android.arch.persistence.room.Room;
-import android.arch.persistence.room.RoomDatabase;
 import android.os.Bundle;
 import android.app.FragmentTransaction;
 import android.support.annotation.NonNull;
@@ -10,20 +7,22 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 
 import lab.wasikrafal.psmaprojekt.R;
 import lab.wasikrafal.psmaprojekt.database.MediaDatabase;
+import lab.wasikrafal.psmaprojekt.fragments.AudioListFragment;
 import lab.wasikrafal.psmaprojekt.fragments.AudioRecorderFragment;
+import lab.wasikrafal.psmaprojekt.fragments.VideoListFragment;
 import lab.wasikrafal.psmaprojekt.fragments.VideoRecorderFragment;
-import lab.wasikrafal.psmaprojekt.models.AudioCategory;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener
 {
     VideoRecorderFragment videoRecorderFragment;
     AudioRecorderFragment audioRecorderFragment;
+    AudioListFragment audioListFragment;
+    VideoListFragment videoListFragment;
     MediaDatabase database;
 
     @Override
@@ -41,6 +40,8 @@ public class MainActivity extends AppCompatActivity
 
         videoRecorderFragment = new VideoRecorderFragment();
         audioRecorderFragment = new AudioRecorderFragment();
+        audioListFragment = new AudioListFragment();
+        videoListFragment = new VideoListFragment();
         startVideoListFragment();
     }
 
@@ -62,7 +63,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onNavigationItemSelected(MenuItem item)
+    public boolean onNavigationItemSelected(@NonNull MenuItem item)
     {
         int id = item.getItemId();
 
@@ -108,12 +109,20 @@ public class MainActivity extends AppCompatActivity
 
     private void startAudioListFragment()
     {
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, audioListFragment);
+        transaction.addToBackStack(null);
 
+        transaction.commit();
     }
 
     private void startVideoListFragment()
     {
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, videoListFragment);
+        transaction.addToBackStack(null);
 
+        transaction.commit();
     }
 
     private void startCategorySettingsFragment()

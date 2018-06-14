@@ -19,7 +19,7 @@ import lab.wasikrafal.psmaprojekt.models.Recording;
 @TypeConverters({Converters.class})
 public abstract class MediaDatabase extends RoomDatabase
 {
-    private static MediaDatabase INSTANCE;
+    private static MediaDatabase INSTANCE = null;
 
     public abstract MovieDAO movieDAO();
     public abstract RecordingDAO recordingDAO();
@@ -37,7 +37,7 @@ public abstract class MediaDatabase extends RoomDatabase
     private static MediaDatabase buildDatabase(final Context context)
     {
         return Room.databaseBuilder(context, MediaDatabase.class,
-                "mediaDatabase").addCallback(new Callback()
+                "mediaDatabase").allowMainThreadQueries().addCallback(new Callback()
         {
             @Override
             public void onCreate(@NonNull SupportSQLiteDatabase db)

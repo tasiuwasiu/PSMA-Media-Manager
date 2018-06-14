@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -133,7 +134,6 @@ public class AudioRecorderFragment extends Fragment
 
         final Dialog dialog = new Dialog(getActivity());
         dialog.setContentView(R.layout.dialog_audio_recorded);
-        dialog.setTitle("Zapisz");
 
         final Spinner spinner = (Spinner) dialog.findViewById(R.id.sp_aud_categories);
         ArrayAdapter spinnerArrayAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, database.audioCategoryDAO().loadAllCategories());
@@ -157,6 +157,8 @@ public class AudioRecorderFragment extends Fragment
         });
 
         dialog.show();
+        Window window = dialog.getWindow();
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
 
     public void onStop()
