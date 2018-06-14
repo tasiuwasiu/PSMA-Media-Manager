@@ -7,11 +7,9 @@ import android.support.annotation.NonNull;
 
 import java.util.Date;
 
-import lab.wasikrafal.psmaprojekt.models.AudioCategories;
-
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
-@Entity(foreignKeys = @ForeignKey(entity = AudioCategories.class,
+@Entity(foreignKeys = @ForeignKey(entity = AudioCategory.class,
         parentColumns = "categoryId",
         childColumns = "catID",
         onDelete = CASCADE))

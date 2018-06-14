@@ -1,7 +1,10 @@
 package lab.wasikrafal.psmaprojekt.fragments;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.app.Fragment;
+import android.arch.persistence.room.Room;
+import android.arch.persistence.room.RoomDatabase;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Environment;
@@ -9,7 +12,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -18,14 +24,21 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import lab.wasikrafal.psmaprojekt.R;
+import lab.wasikrafal.psmaprojekt.database.MediaDatabase;
+import lab.wasikrafal.psmaprojekt.models.AudioCategory;
+import lab.wasikrafal.psmaprojekt.models.Recording;
 
 public class AudioRecorderFragment extends Fragment
 {
     MediaRecorder mediaRecorder;
     private String [] permissions = {Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    MediaDatabase database;
+    String path;
+    long length;
 
     @Override
     public void onCreate(Bundle bundle)
@@ -33,6 +46,7 @@ public class AudioRecorderFragment extends Fragment
         super.onCreate(bundle);
         int resCode=0;
         requestPermissions( permissions, resCode);
+        database = Room.databaseBuilder(getActivity().getApplicationContext(), MediaDatabase.class, "mediaDatabase").allowMainThreadQueries().build();
     }
 
 
@@ -85,12 +99,13 @@ public class AudioRecorderFragment extends Fragment
         {
             e.printStackTrace();
         }
+        path = audiofile.getAbsolutePath();
         mediaRecorder = new MediaRecorder();
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-        mediaRecorder.setOutputFile(audiofile.getAbsolutePath());
-        Log.d("path", audiofile.getAbsolutePath());
+        mediaRecorder.setOutputFile(path);
+        Log.d("path", path);
         try
         {
             mediaRecorder.prepare();
@@ -101,6 +116,7 @@ public class AudioRecorderFragment extends Fragment
         }
 
         mediaRecorder.start();
+        length = System.currentTimeMillis();
     }
 
     private void stopRecording()
@@ -109,6 +125,38 @@ public class AudioRecorderFragment extends Fragment
         mediaRecorder.reset();
         mediaRecorder.release();
         mediaRecorder = null;
+        length = System.currentTimeMillis() - length;
+        final Recording recording = new Recording();
+        recording.filename = path;
+        recording.date = new Date();
+        recording.length = length;
+
+        final Dialog dialog = new Dialog(getActivity());
+        dialog.setContentView(R.layout.dialog_audio_recorded);
+        dialog.setTitle("Zapisz");
+
+        final Spinner spinner = (Spinner) dialog.findViewById(R.id.sp_aud_categories);
+        ArrayAdapter spinnerArrayAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, database.audioCategoryDAO().loadAllCategories());
+        spinner.setAdapter(spinnerArrayAdapter);
+
+        final EditText title = (EditText) dialog.findViewById(R.id.et_audio_title);
+        final EditText description = (EditText) dialog.findViewById(R.id.et_audio_desc);
+        Button okButton = (Button) dialog.findViewById(R.id.but_aud_rec_ok);
+        okButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                recording.description = description.getText().toString();
+                recording.title = title.getText().toString();
+                AudioCategory curr = (AudioCategory)spinner.getSelectedItem();
+                recording.catID = curr.categoryId;
+                database.recordingDAO().insertRecording(recording);
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
     }
 
     public void onStop()

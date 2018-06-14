@@ -11,7 +11,7 @@
                 android:title="Nagrywanie wideo"/>
             <item
                 android:id="@+id/nav_mic"
-                android:icon="@drawable/ic_menu_gallery"
+                android:icon="@drawable/ic_mic_black_24dp"
                 android:title="Nagrywanie audio"/>
         </menu>
     </item>
@@ -21,11 +21,11 @@
         <menu>
             <item
                 android:id="@+id/nav_vid_list"
-                android:icon="@drawable/ic_menu_share"
+                android:icon="@drawable/ic_local_movies_black_24dp"
                 android:title="Lista filmów"/>
             <item
                 android:id="@+id/nav_aud_list"
-                android:icon="@drawable/ic_menu_send"
+                android:icon="@drawable/ic_audiotrack_black_24dp"
                 android:title="Lista nagrań audio"/>
         </menu>
     </item>
@@ -35,11 +35,11 @@
         <menu>
             <item
                 android:id="@+id/nav_settings"
-                android:icon="@drawable/ic_menu_send"
+                android:icon="@drawable/ic_settings_black_24dp"
                 android:title="Ustawienia"/>
             <item
                 android:id="@+id/nav_cat_settings"
-                android:icon="@drawable/ic_menu_send"
+                android:icon="@drawable/ic_assignment_black_24dp"
                 android:title="Kategorie audio"/>
         </menu>
     </item>
