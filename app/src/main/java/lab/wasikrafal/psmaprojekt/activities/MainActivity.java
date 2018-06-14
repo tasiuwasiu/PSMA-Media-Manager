@@ -29,21 +29,17 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-
         setDatabase();
-
         setContentView(R.layout.activity_main);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        //DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
 
         if (savedInstanceState != null) {
             currentFragment = getFragmentManager().getFragment(savedInstanceState, "currFrag");
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.replace(R.id.fragment_container, currentFragment);
-            //transaction.addToBackStack(null);
             transaction.commit();
         } else {
             startVideoListFragment();
@@ -60,7 +56,7 @@ public class MainActivity extends AppCompatActivity
     private void setDatabase()
     {
         database = MediaDatabase.getInstance(this);
-   }
+    }
 
     @Override
     public void onBackPressed()
@@ -104,7 +100,6 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         currentFragment = new VideoRecorderFragment();
         transaction.replace(R.id.fragment_container, currentFragment);
-        //transaction.addToBackStack(null);
         transaction.commit();
     }
 
@@ -113,7 +108,6 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         currentFragment = new AudioRecorderFragment();
         transaction.replace(R.id.fragment_container, currentFragment);
-        //transaction.addToBackStack(null);
         transaction.commit();
     }
 
@@ -122,7 +116,6 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         currentFragment = new AudioListFragment();
         transaction.replace(R.id.fragment_container, currentFragment);
-        //transaction.addToBackStack(null);
         transaction.commit();
     }
 
@@ -131,7 +124,6 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         currentFragment = new VideoListFragment();
         transaction.replace(R.id.fragment_container, currentFragment);
-        //transaction.addToBackStack(null);
         transaction.commit();
     }
 
@@ -140,7 +132,6 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         currentFragment = new AudioCategorySettingsFragment();
         transaction.replace(R.id.fragment_container, currentFragment);
-        //transaction.addToBackStack(null);
         transaction.commit();
     }
 
@@ -149,7 +140,6 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         currentFragment = new SettingsFragment();
         transaction.replace(R.id.fragment_container, currentFragment);
-        //transaction.addToBackStack(null);
         transaction.commit();
     }
 }

@@ -45,7 +45,7 @@ public class AudioRecorderFragment extends Fragment
         super.onCreate(bundle);
         int resCode=0;
         requestPermissions( permissions, resCode);
-        database = Room.databaseBuilder(getActivity().getApplicationContext(), MediaDatabase.class, "mediaDatabase").allowMainThreadQueries().build();
+        database = MediaDatabase.getInstance(getActivity());
 
         if (getFragmentManager().findFragmentByTag("service_fragment") == null)
         {

@@ -8,11 +8,10 @@ import java.io.IOException;
 
 public class AudioRecorderServiceFragment extends Fragment
 {
-    boolean isRecording = false;
-    String path;
-    long length;
-
-    MediaRecorder mediaRecorder;
+    private boolean isRecording = false;
+    private String path;
+    private long length;
+    private MediaRecorder mediaRecorder;
 
     @Override
     public void onCreate(Bundle bundle)
@@ -31,15 +30,11 @@ public class AudioRecorderServiceFragment extends Fragment
         mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
         mediaRecorder.setOutputFile(path);
         length = System.currentTimeMillis();
-        try
-        {
+        try {
             mediaRecorder.prepare();
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
         }
-
         mediaRecorder.start();
     }
 
@@ -62,8 +57,7 @@ public class AudioRecorderServiceFragment extends Fragment
     public void onDestroy()
     {
         super.onDestroy();
-        if (mediaRecorder!= null)
-        {
+        if (mediaRecorder != null) {
             mediaRecorder.release();
             mediaRecorder = null;
         }
