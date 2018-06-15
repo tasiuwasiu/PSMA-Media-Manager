@@ -22,6 +22,13 @@ import lab.wasikrafal.psmaprojekt.fragments.VideoRecorderFragment;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener
 {
+    public static final int SORT_NAME = 0;
+    public static final int SORT_DATE = 1;
+    public static final int SORT_LENGTH = 2;
+
+    int moviesSort = SORT_NAME;
+    int audioSort = SORT_LENGTH;
+
     Fragment currentFragment;
     MediaDatabase database;
 
@@ -114,7 +121,10 @@ public class MainActivity extends AppCompatActivity
     private void startAudioListFragment()
     {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        Bundle bundle = new Bundle();
+        bundle.putInt("sort", audioSort);
         currentFragment = new AudioListFragment();
+        currentFragment.setArguments(bundle);
         transaction.replace(R.id.fragment_container, currentFragment);
         transaction.commit();
     }
@@ -122,7 +132,10 @@ public class MainActivity extends AppCompatActivity
     private void startVideoListFragment()
     {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        Bundle bundle = new Bundle();
+        bundle.putInt("sort", moviesSort);
         currentFragment = new VideoListFragment();
+        currentFragment.setArguments(bundle);
         transaction.replace(R.id.fragment_container, currentFragment);
         transaction.commit();
     }
