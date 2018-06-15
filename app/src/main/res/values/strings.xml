@@ -9,7 +9,7 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_video_recorder">VideoRecorderActivity</string>
     <string name="aud_rec_not_recording">Nie nagrywam</string>
-    <string name="aud_rec_recording">Nagrywam</string>
+    <string name="aud_rec_recording">Trwa nagrywanie</string>
     <string name="aud_rec_start_recording">Start</string>
     <string name="aud_rec_stop_recording">Stop</string>
 </resources>

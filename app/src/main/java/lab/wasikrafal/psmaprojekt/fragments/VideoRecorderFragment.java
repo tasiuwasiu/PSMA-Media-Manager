@@ -32,7 +32,7 @@ public class VideoRecorderFragment extends Fragment
 {
     VideoRecorderServiceFragment videoRecorderServiceFragment;
     MediaDatabase database;
-    private String[] permissions = {Manifest.permission.RECORD_AUDIO, Manifest.permission.CAPTURE_VIDEO_OUTPUT, Manifest.permission.CAMERA};
+    private String[] permissions = {Manifest.permission.RECORD_AUDIO, Manifest.permission.CAPTURE_VIDEO_OUTPUT, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
     boolean isRecording = false;
     String path;
 

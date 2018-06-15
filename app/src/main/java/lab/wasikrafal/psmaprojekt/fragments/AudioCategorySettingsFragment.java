@@ -121,8 +121,6 @@ public class AudioCategorySettingsFragment extends Fragment
 
     private void addCategory()
     {
-        Toast.makeText(getContext(), "add", Toast.LENGTH_LONG).show();
-
         final Dialog dialog = new Dialog(getActivity());
         dialog.setContentView(R.layout.dialog_add_audio_category);
 

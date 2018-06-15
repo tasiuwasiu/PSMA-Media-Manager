@@ -13,7 +13,7 @@ import android.widget.MediaController;
 import lab.wasikrafal.psmaprojekt.R;
 import lab.wasikrafal.psmaprojekt.libraries.PlayerController;
 
-public class AudioPlayerActivity extends AppCompatActivity implements MediaPlayer.OnPreparedListener, PlayerController.MediaPlayerControl
+public class AudioPlayerActivity extends AppCompatActivity implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener, PlayerController.MediaPlayerControl
 {
     MediaPlayer player;
     String path;
@@ -52,6 +52,7 @@ public class AudioPlayerActivity extends AppCompatActivity implements MediaPlaye
     {
         player = new MediaPlayer();
         player.setOnPreparedListener(this);
+        player.setOnCompletionListener(this);
         controller = new PlayerController(this){
             @Override
             public void show(int timeout)
@@ -155,5 +156,11 @@ public class AudioPlayerActivity extends AppCompatActivity implements MediaPlaye
                 controller.show();
             }
         });
+    }
+
+    @Override
+    public void onCompletion(MediaPlayer mediaPlayer)
+    {
+        controller.updatePausePlay();
     }
 }

@@ -1,6 +1,8 @@
 package lab.wasikrafal.psmaprojekt.libraries;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
@@ -41,7 +43,6 @@ public class PlayerController extends FrameLayout
     private static final int SHOW_PROGRESS = 2;
     boolean useFastForward;
     boolean fromXml;
-    boolean listenersSet;
     StringBuilder formatBuilder;
     Formatter formatter;
     ImageButton pauseButton;
@@ -133,13 +134,19 @@ public class PlayerController extends FrameLayout
         }
 
         nextButton = (ImageButton) v.findViewById(R.id.ib_contr_next);
-        if (nextButton != null && !fromXml && fromXml && listenersSet) {
-            nextButton.setVisibility(View.GONE);
+        if (nextButton != null) {
+            nextButton.setOnClickListener(nextListener);
+            if (!fromXml) {
+                rewButton.setVisibility(useFastForward ? View.VISIBLE : View.GONE);
+            }
         }
 
         prevButton = (ImageButton) v.findViewById(R.id.ib_contr_prev);
-        if (prevButton != null && !fromXml && fromXml && listenersSet) {
-            prevButton.setVisibility(View.GONE);
+        if (prevButton != null) {
+            prevButton.setOnClickListener(prevListener);
+            if (!fromXml) {
+                rewButton.setVisibility(useFastForward ? View.VISIBLE : View.GONE);
+            }
         }
 
         progressBar = (ProgressBar) v.findViewById(R.id.sb_contr_prog);
@@ -147,6 +154,7 @@ public class PlayerController extends FrameLayout
             if (progressBar instanceof SeekBar) {
                 SeekBar seeker = (SeekBar) progressBar;
                 seeker.setOnSeekBarChangeListener(seekListener);
+                seeker.getProgressDrawable().setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
             }
             progressBar.setMax(1000);
         }
@@ -355,7 +363,7 @@ public class PlayerController extends FrameLayout
         }
 
         if (playerControl.isPlaying()) {
-            pauseButton.setImageResource( R.drawable.ic_media_pause );
+            pauseButton.setImageResource( R.drawable.ic_media_pause);
         } else {
             pauseButton.setImageResource( R.drawable.ic_media_play  );
         }
@@ -444,10 +452,10 @@ public class PlayerController extends FrameLayout
             rewButton.setEnabled(enabled);
         }
         if (nextButton != null) {
-            nextButton.setEnabled(enabled && nextListener != null);
+            nextButton.setEnabled(enabled);
         }
         if (prevButton != null) {
-            prevButton.setEnabled(enabled && prevListener != null);
+            prevButton.setEnabled(enabled);
         }
         if (progressBar != null) {
             progressBar.setEnabled(enabled);

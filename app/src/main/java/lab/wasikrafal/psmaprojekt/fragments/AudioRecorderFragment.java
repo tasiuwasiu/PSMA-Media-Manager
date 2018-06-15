@@ -82,7 +82,7 @@ public class AudioRecorderFragment extends Fragment
                 {
                     stopRecording();
                     isRecording = false;
-                    status.setText(R.string.aud_rec_not_recording);
+                    status.setText("");
                     record.setText(R.string.aud_rec_start_recording);
                 }
                 else

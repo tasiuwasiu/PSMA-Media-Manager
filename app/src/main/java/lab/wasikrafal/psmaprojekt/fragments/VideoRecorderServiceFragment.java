@@ -6,6 +6,7 @@ import android.hardware.Camera;
 import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -28,7 +29,7 @@ public class VideoRecorderServiceFragment extends Fragment implements SurfaceHol
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
+        //setRetainInstance(true);
         camcorderProfile = CamcorderProfile.get(CamcorderProfile.QUALITY_480P);
 
     }
@@ -134,7 +135,20 @@ public class VideoRecorderServiceFragment extends Fragment implements SurfaceHol
 
                 camera.setParameters(p);
                 camera.setPreviewDisplay(holder);
-                camera.setDisplayOrientation(90);
+
+
+                int rotation = getActivity().getWindowManager().getDefaultDisplay()
+                        .getRotation();
+                if (rotation == Surface.ROTATION_0)
+                    camera.setDisplayOrientation(270);
+                else if (rotation == Surface.ROTATION_90)
+                    camera.setDisplayOrientation(180);
+                else if (rotation == Surface.ROTATION_180)
+                    camera.setDisplayOrientation(0);
+                else if (rotation == Surface.ROTATION_270)
+                    camera.setDisplayOrientation(0);
+
+
                 camera.startPreview();
                 previewRunning = true;
             }
@@ -147,13 +161,14 @@ public class VideoRecorderServiceFragment extends Fragment implements SurfaceHol
 
     public void surfaceDestroyed(SurfaceHolder holder)
     {
-        /*if (isRecording)
+        if (isRecording)
         {
             mediaRecorder.stop();
             isRecording = false;
+            mediaRecorder.release();
         }
-        mediaRecorder.release();
-        */
+
+
         if (useCamera)
         {
             previewRunning = false;

@@ -1,5 +1,6 @@
 package lab.wasikrafal.psmaprojekt.activities;
 
+import android.media.MediaPlayer;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,7 +14,7 @@ import android.widget.VideoView;
 import lab.wasikrafal.psmaprojekt.R;
 import lab.wasikrafal.psmaprojekt.libraries.PlayerController;
 
-public class VideoPlayerActivity extends AppCompatActivity implements PlayerController.MediaPlayerControl
+public class VideoPlayerActivity extends AppCompatActivity implements PlayerController.MediaPlayerControl, MediaPlayer.OnCompletionListener
 {
     VideoView videoView;
     String path;
@@ -54,6 +55,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements PlayerCont
     private void initPlayer()
     {
         videoView.setVideoPath(path);
+        videoView.setOnCompletionListener(this);
         controller = new PlayerController(this);
         controller.setMediaPlayer(this);
         controller.setAnchorView((FrameLayout)findViewById(R.id.layout_video_player));
@@ -61,7 +63,6 @@ public class VideoPlayerActivity extends AppCompatActivity implements PlayerCont
         controller.setEnabled(true);
         controller.show();
         videoView.start();
-        //videoView
     }
 
     @Override
@@ -140,5 +141,9 @@ public class VideoPlayerActivity extends AppCompatActivity implements PlayerCont
     }
 
 
-
+    @Override
+    public void onCompletion(MediaPlayer mediaPlayer)
+    {
+        controller.updatePausePlay();
+    }
 }

@@ -1,6 +1,7 @@
 package lab.wasikrafal.psmaprojekt.activities;
 
 import android.app.Fragment;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.app.FragmentTransaction;
 import android.support.annotation.NonNull;
@@ -43,6 +44,8 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        loadData();
+
         if (savedInstanceState != null) {
             currentFragment = getFragmentManager().getFragment(savedInstanceState, "currFrag");
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
@@ -58,6 +61,21 @@ public class MainActivity extends AppCompatActivity
     {
         super.onSaveInstanceState(outState);
         getFragmentManager().putFragment(outState, "currFrag", currentFragment);
+    }
+
+    private void loadData()
+    {
+
+    }
+
+    public void setVideoSort(int code)
+    {
+        moviesSort = code;
+    }
+
+    public void setAudioSort(int code)
+    {
+        audioSort = code;
     }
 
     private void setDatabase()
