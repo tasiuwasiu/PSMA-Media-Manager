@@ -1,20 +1,26 @@
 package lab.wasikrafal.psmaprojekt.adapters;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 
 import lab.wasikrafal.psmaprojekt.R;
 import lab.wasikrafal.psmaprojekt.activities.AudioPlayerActivity;
+import lab.wasikrafal.psmaprojekt.activities.VideoPlayerActivity;
 import lab.wasikrafal.psmaprojekt.models.Movie;
 
 public class RecyclerViewVideoAdapter extends RecyclerView.Adapter<RecyclerViewVideoAdapter.VideoDataHolder>
@@ -30,7 +36,7 @@ public class RecyclerViewVideoAdapter extends RecyclerView.Adapter<RecyclerViewV
     @Override
     public VideoDataHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
     {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_audio, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_video, parent, false);
         return new VideoDataHolder(v);
     }
 
@@ -43,10 +49,19 @@ public class RecyclerViewVideoAdapter extends RecyclerView.Adapter<RecyclerViewV
         long minute = (movie.length / (1000 * 60)) % 60;
         long hour = (movie.length / (1000 * 60 * 60)) % 24;
 
+        File imgFile = new File(movie.thumbnail);
+
+        if(imgFile.exists()){
+
+            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+            holder.thumbnail.setImageBitmap(myBitmap);
+        }
+
         holder.title.setText(movie.title);
         holder.description.setText(movie.description);
         holder.date.setText(dateFormat.format(movie.date));
         holder.length.setText(String.format("%02d:%02d:%02d", hour, minute, second));
+
         holder.movie = movie;
     }
 
@@ -75,6 +90,7 @@ public class RecyclerViewVideoAdapter extends RecyclerView.Adapter<RecyclerViewV
         TextView description;
         TextView date;
         TextView length;
+        ImageView thumbnail;
 
         public VideoDataHolder(final View itemView)
         {
@@ -84,12 +100,13 @@ public class RecyclerViewVideoAdapter extends RecyclerView.Adapter<RecyclerViewV
             description = (TextView) itemView.findViewById(R.id.tv_video_list_desc);
             date = (TextView) itemView.findViewById(R.id.tv_video_list_date);
             length = (TextView) itemView.findViewById(R.id.tv_video_list_length);
+            thumbnail = (ImageView) itemView.findViewById(R.id.iv_video_list_thumbnail);
             cardView.setOnClickListener(new View.OnClickListener()
             {
                 @Override
                 public void onClick(View view)
                 {
-                    Intent intent = new Intent(itemView.getContext(), AudioPlayerActivity.class);
+                    Intent intent = new Intent(itemView.getContext(), VideoPlayerActivity.class);
                     intent.putExtra("filepath", movie.fileName);
                     itemView.getContext().startActivity(intent);
                 }

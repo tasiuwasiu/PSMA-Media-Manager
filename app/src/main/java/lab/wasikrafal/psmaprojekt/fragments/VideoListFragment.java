@@ -99,6 +99,8 @@ public class VideoListFragment extends Fragment
         movies = database.movieDAO().getAllMovies();
         File file = new File(m.fileName);
         file.delete();
+        file = new File (m.thumbnail);
+        file.delete();
         recyclerViewVideoAdapter.setData(movies);
         recyclerViewVideoAdapter.notifyDataSetChanged();
     }

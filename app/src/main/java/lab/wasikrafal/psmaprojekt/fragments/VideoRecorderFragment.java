@@ -9,6 +9,7 @@ import android.media.MediaMetadataRetriever;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.LayoutInflater;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -60,6 +61,8 @@ public class VideoRecorderFragment extends Fragment
                              Bundle savedInstanceState)
     {
         View view = inflater.inflate(R.layout.fragment_video_recorder, container, false);
+        SurfaceView surfaceView = (SurfaceView) view.findViewById(R.id.sv_video_record);
+        videoRecorderServiceFragment.setSurfaceView(surfaceView);
         final Button record = (Button) view.findViewById(R.id.but_record);
         if (videoRecorderServiceFragment.isRecording())
         {
@@ -68,8 +71,6 @@ public class VideoRecorderFragment extends Fragment
         }
         record.setOnClickListener(new View.OnClickListener()
         {
-            boolean isRecording = false;
-
             @Override
             public void onClick(View view)
             {
@@ -128,7 +129,7 @@ public class VideoRecorderFragment extends Fragment
             @Override
             public void onClick(View view)
             {
-                //movie.thumbnail = saveThumbnail(path);
+                movie.thumbnail = saveThumbnail(path);
 
                 movie.title = title.getText().toString();
                 movie.description = description.getText().toString();
@@ -143,7 +144,7 @@ public class VideoRecorderFragment extends Fragment
 
     private String saveThumbnail(String path)
     {
-        String thumbnailPath = path + ".png";
+        String thumbnailPath = path + ".jpg";
         MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
 
         mediaMetadataRetriever.setDataSource(path);
@@ -152,7 +153,7 @@ public class VideoRecorderFragment extends Fragment
         FileOutputStream out = null;
         try {
             out = new FileOutputStream(thumbnailPath);
-            bmFrame.compress(Bitmap.CompressFormat.PNG, 100, out);
+            bmFrame.compress(Bitmap.CompressFormat.JPEG, 30, out);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

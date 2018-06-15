@@ -51,6 +51,17 @@ public class RecyclerViewAudioAdapter extends RecyclerView.Adapter<RecyclerViewA
         holder.date.setText(dateFormat.format(recording.date));
         holder.length.setText(String.format("%02d:%02d:%02d", hour, minute, second));
         holder.recording = recording;
+        holder.category.setText(findCategory(recording.catID));
+    }
+
+    private String findCategory(int catID)
+    {
+        for (AudioCategory ac : audioCategoryList)
+        {
+            if (ac.categoryId == catID)
+                return ac.name;
+        }
+        return "Nieznana";
     }
 
     @Override
@@ -78,6 +89,7 @@ public class RecyclerViewAudioAdapter extends RecyclerView.Adapter<RecyclerViewA
         TextView description;
         TextView date;
         TextView length;
+        TextView category;
 
         public AudioDataHolder(final View itemView)
         {
@@ -87,6 +99,7 @@ public class RecyclerViewAudioAdapter extends RecyclerView.Adapter<RecyclerViewA
             description = (TextView)itemView.findViewById(R.id.tv_audio_list_desc);
             date = (TextView)itemView.findViewById(R.id.tv_audio_list_date);
             length = (TextView)itemView.findViewById(R.id.tv_audio_list_length);
+            category = (TextView)itemView.findViewById(R.id.tv_audio_list_category);
             cardView.setOnClickListener(new View.OnClickListener()
             {
                 @Override

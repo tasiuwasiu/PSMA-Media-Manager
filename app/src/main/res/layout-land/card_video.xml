@@ -20,7 +20,7 @@
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/tv_video_list_title"
@@ -31,8 +31,8 @@
                 android:text="TextView"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/iv_video_list_thumbnail"/>
+                app:layout_constraintStart_toEndOf="@+id/iv_video_list_thumbnail"
+                app:layout_constraintTop_toTopOf="parent"/>
 
             <TextView
                 android:id="@+id/tv_video_list_desc"
@@ -42,7 +42,7 @@
                 android:layout_marginTop="8dp"
                 android:text="TextView"
                 android:textStyle="italic"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/iv_video_list_thumbnail"
                 app:layout_constraintTop_toBottomOf="@+id/tv_video_list_title"/>
 
             <TextView
@@ -50,32 +50,37 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
+                android:layout_marginTop="8dp"
                 android:text="TextView"
                 android:textSize="12sp"
+                android:textStyle="italic"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/tv_video_list_length"/>
+                app:layout_constraintTop_toBottomOf="@+id/tv_video_list_length"/>
 
             <TextView
                 android:id="@+id/tv_video_list_length"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:layout_marginTop="8dp"
                 android:text="TextView"
                 android:textSize="12sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_video_list_desc"/>
+                android:textStyle="italic"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
 
             <ImageView
                 android:id="@+id/iv_video_list_thumbnail"
                 android:layout_width="wrap_content"
-                android:layout_height="75dp"
+                android:layout_height="70dp"
+                android:layout_marginBottom="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:adjustViewBounds="true"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@android:color/background_dark"/>
+                app:srcCompat="@color/cardview_dark_background"/>
         </android.support.constraint.ConstraintLayout>
 
     </android.support.v7.widget.CardView>

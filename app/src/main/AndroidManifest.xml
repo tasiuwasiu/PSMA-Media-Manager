@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="lab.wasikrafal.psmaprojekt">
-    <uses-feature android:name="android.hardware.camera"
-                  android:required="true" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.RECORD_VIDEO" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true"/>
+
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.RECORD_VIDEO"/>
 
     <application
         android:allowBackup="true"
@@ -28,10 +31,13 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
-        <activity android:name=".activities.VideoPlayerActivity"
-            android:label="Odtwarzacz Filmów">
+        <activity
+            android:name=".activities.VideoPlayerActivity"
+            android:label="Odtwarzacz Filmów"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
         </activity>
-        <activity android:name=".activities.AudioPlayerActivity"
+        <activity
+            android:name=".activities.AudioPlayerActivity"
             android:label="Odtwarzacz Dźwięku">
         </activity>
 
