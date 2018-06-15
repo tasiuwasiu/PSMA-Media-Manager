@@ -25,9 +25,9 @@ public class CarouselPagerAdapter extends PagerAdapter
     {
         ctx = c;
         images[0] = R.drawable.screen_jeden;
-        images[1] = R.drawable.screen_jeden;
-        images[2] = R.drawable.screen_jeden;
-        images[3] = R.drawable.screen_jeden;
+        images[1] = R.drawable.screen_dwa;
+        images[2] = R.drawable.screen_trzy;
+        images[3] = R.drawable.screen_cztery;
         inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
     @Override

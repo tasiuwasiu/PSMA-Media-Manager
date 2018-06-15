@@ -1,6 +1,7 @@
 package lab.wasikrafal.psmaprojekt.activities;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.app.FragmentTransaction;
@@ -40,7 +41,6 @@ public class MainActivity extends AppCompatActivity
         setDatabase();
         setContentView(R.layout.activity_main);
 
-        //DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -65,7 +65,9 @@ public class MainActivity extends AppCompatActivity
 
     private void loadData()
     {
-
+        SharedPreferences sharedPreferences = getSharedPreferences("preferences", Context.MODE_PRIVATE);
+        moviesSort = sharedPreferences.getInt("videoSort", MainActivity.SORT_NAME);
+        audioSort = sharedPreferences.getInt("audioSort", MainActivity.SORT_NAME);
     }
 
     public void setVideoSort(int code)

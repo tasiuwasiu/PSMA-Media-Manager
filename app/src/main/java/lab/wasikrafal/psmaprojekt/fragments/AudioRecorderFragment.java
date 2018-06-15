@@ -128,7 +128,7 @@ public class AudioRecorderFragment extends Fragment
         dialog.setContentView(R.layout.dialog_audio_recorded);
 
         final Spinner spinner = (Spinner) dialog.findViewById(R.id.sp_aud_categories);
-        ArrayAdapter spinnerArrayAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, database.audioCategoryDAO().loadAllCategories());
+        ArrayAdapter spinnerArrayAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_dropdown_item, database.audioCategoryDAO().loadAllCategories());
         spinner.setAdapter(spinnerArrayAdapter);
 
         final EditText title = (EditText) dialog.findViewById(R.id.et_audio_title);
