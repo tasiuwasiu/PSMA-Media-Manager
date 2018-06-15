@@ -42,15 +42,16 @@ public class VideoRecorderServiceFragment extends Fragment implements SurfaceHol
 
     }
 
-    private void prepareRecorder()
+    public void prepareRecorder()
     {
         mediaRecorder = new MediaRecorder();
         mediaRecorder.setPreviewDisplay(holder.getSurface());
 
-        if (useCamera)
-        {
+        if (useCamera) {
             camera.unlock();
             mediaRecorder.setCamera(camera);
+
+
         }
 
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
@@ -65,12 +66,9 @@ public class VideoRecorderServiceFragment extends Fragment implements SurfaceHol
         prepareRecorder();
         mediaRecorder.setOutputFile(path);
 
-        try
-        {
+        try {
             mediaRecorder.prepare();
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -81,14 +79,10 @@ public class VideoRecorderServiceFragment extends Fragment implements SurfaceHol
     public void stopRecording()
     {
         mediaRecorder.stop();
-        if(useCamera)
-        {
-            try
-            {
+        if (useCamera) {
+            try {
                 camera.reconnect();
-            }
-            catch (IOException e)
-            {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
@@ -99,18 +93,14 @@ public class VideoRecorderServiceFragment extends Fragment implements SurfaceHol
 
     public void surfaceCreated(SurfaceHolder holder)
     {
-        if (useCamera)
-        {
+        if (useCamera) {
             camera = Camera.open();
 
-            try
-            {
+            try {
                 camera.setPreviewDisplay(holder);
                 camera.startPreview();
                 previewRunning = true;
-            }
-            catch (IOException e)
-            {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
@@ -118,14 +108,11 @@ public class VideoRecorderServiceFragment extends Fragment implements SurfaceHol
 
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height)
     {
-        if (!isRecording && useCamera)
-        {
-            if (previewRunning)
-            {
+        if (!isRecording && useCamera) {
+            if (previewRunning) {
                 camera.stopPreview();
             }
-            try
-            {
+            try {
                 Camera.Parameters p = camera.getParameters();
                 List<Camera.Size> previewSizes = p.getSupportedPreviewSizes();
                 Camera.Size previewSize = previewSizes.get(0);
@@ -151,9 +138,7 @@ public class VideoRecorderServiceFragment extends Fragment implements SurfaceHol
 
                 camera.startPreview();
                 previewRunning = true;
-            }
-            catch (IOException e)
-            {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
@@ -161,16 +146,14 @@ public class VideoRecorderServiceFragment extends Fragment implements SurfaceHol
 
     public void surfaceDestroyed(SurfaceHolder holder)
     {
-        if (isRecording)
-        {
+        if (isRecording) {
             mediaRecorder.stop();
             isRecording = false;
             mediaRecorder.release();
         }
 
 
-        if (useCamera)
-        {
+        if (useCamera) {
             previewRunning = false;
             camera.release();
         }

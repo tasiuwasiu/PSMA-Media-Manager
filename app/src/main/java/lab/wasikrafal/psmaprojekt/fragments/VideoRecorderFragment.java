@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
 import android.os.Bundle;
@@ -32,16 +33,18 @@ public class VideoRecorderFragment extends Fragment
 {
     VideoRecorderServiceFragment videoRecorderServiceFragment;
     MediaDatabase database;
-    private String[] permissions = {Manifest.permission.RECORD_AUDIO, Manifest.permission.CAPTURE_VIDEO_OUTPUT, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    private String[] permissions = {Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE};
     boolean isRecording = false;
     String path;
+    private static final int RES_CODE = 1;
+    Button record;
+    SurfaceView surfaceView;
 
     @Override
     public void onCreate(Bundle bundle)
     {
         super.onCreate(bundle);
-        int resCode = 0;
-        requestPermissions(permissions, resCode);
+        requestPermissions(permissions, RES_CODE);
 
         database = MediaDatabase.getInstance(getActivity());
 
@@ -56,16 +59,16 @@ public class VideoRecorderFragment extends Fragment
 
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
         View view = inflater.inflate(R.layout.fragment_video_recorder, container, false);
-        SurfaceView surfaceView = (SurfaceView) view.findViewById(R.id.sv_video_record);
+        surfaceView = (SurfaceView) view.findViewById(R.id.sv_video_record);
         videoRecorderServiceFragment.setSurfaceView(surfaceView);
-        final Button record = (Button) view.findViewById(R.id.but_record);
-        if (videoRecorderServiceFragment.isRecording())
-        {
+        record = (Button) view.findViewById(R.id.but_record);
+        if (videoRecorderServiceFragment.isRecording()) {
             isRecording = true;
             record.setText("stop");
         }
@@ -90,18 +93,40 @@ public class VideoRecorderFragment extends Fragment
 
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults)
+    {
+        switch (requestCode) {
+            case RES_CODE: {
+                if (grantResults.length > 2
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                        && grantResults[1] == PackageManager.PERMISSION_GRANTED
+                        && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
+
+                    record.setEnabled(true);
+
+                } else {
+                    record.setEnabled(false);
+                }
+            }
+        }
+    }
+
     private void startRecording()
     {
         Calendar currentTime = Calendar.getInstance();
         SimpleDateFormat time = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.ENGLISH);
         String filePath = "PSMA/video/" + time.format(currentTime.getTime()) + ".mp4";
 
-        File videofile = new File(Environment.getExternalStorageDirectory(),filePath);
+        File videofolder = new File(Environment.getExternalStorageDirectory(), "PSMA/video/");
+        if (!videofolder.exists())
+            videofolder.mkdirs();
+
+        File videofile = new File(Environment.getExternalStorageDirectory(), filePath);
+
         try {
             videofile.createNewFile();
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         path = videofile.getAbsolutePath();
@@ -112,7 +137,7 @@ public class VideoRecorderFragment extends Fragment
     private void stopRecording()
     {
         videoRecorderServiceFragment.stopRecording();
-        final Movie movie= new Movie();
+        final Movie movie = new Movie();
         movie.fileName = videoRecorderServiceFragment.getPath();
         movie.date = new Date();
         movie.length = videoRecorderServiceFragment.getLength();
