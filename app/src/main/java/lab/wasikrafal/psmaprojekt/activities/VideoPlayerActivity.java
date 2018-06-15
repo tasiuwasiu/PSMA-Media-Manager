@@ -6,16 +6,19 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.MediaController;
 import android.widget.VideoView;
 
 import lab.wasikrafal.psmaprojekt.R;
+import lab.wasikrafal.psmaprojekt.libraries.PlayerController;
 
-public class VideoPlayerActivity extends AppCompatActivity implements MediaController.MediaPlayerControl
+public class VideoPlayerActivity extends AppCompatActivity implements PlayerController.MediaPlayerControl
 {
     VideoView videoView;
     String path;
-    MediaController controller;
+    //MediaController controller;
+    PlayerController controller;
     Handler handler;
 
     @Override
@@ -51,13 +54,14 @@ public class VideoPlayerActivity extends AppCompatActivity implements MediaContr
     private void initPlayer()
     {
         videoView.setVideoPath(path);
-        controller = new MediaController(this);
+        controller = new PlayerController(this);
         controller.setMediaPlayer(this);
-        controller.setAnchorView(findViewById(R.id.layout_audio_player));
-        videoView.setMediaController(controller);
+        controller.setAnchorView((FrameLayout)findViewById(R.id.layout_video_player));
+        //videoView.setMediaController(controller);
         controller.setEnabled(true);
         controller.show();
         videoView.start();
+        //videoView
     }
 
     @Override
@@ -78,7 +82,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements MediaContr
     @Override
     public void start()
     {
-        videoView.resume();
+        videoView.start();
     }
 
     @Override
@@ -135,11 +139,6 @@ public class VideoPlayerActivity extends AppCompatActivity implements MediaContr
         return true;
     }
 
-    @Override
-    public int getAudioSessionId()
-    {
-        return 0;
-    }
 
 
 }

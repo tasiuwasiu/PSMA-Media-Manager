@@ -7,15 +7,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+import android.widget.FrameLayout;
 import android.widget.MediaController;
 
 import lab.wasikrafal.psmaprojekt.R;
+import lab.wasikrafal.psmaprojekt.libraries.PlayerController;
 
-public class AudioPlayerActivity extends AppCompatActivity implements MediaPlayer.OnPreparedListener, MediaController.MediaPlayerControl
+public class AudioPlayerActivity extends AppCompatActivity implements MediaPlayer.OnPreparedListener, PlayerController.MediaPlayerControl
 {
     MediaPlayer player;
     String path;
-    MediaController controller;
+    //MediaController controller;
+    PlayerController controller;
     Handler handler;
 
     @Override
@@ -49,18 +52,11 @@ public class AudioPlayerActivity extends AppCompatActivity implements MediaPlaye
     {
         player = new MediaPlayer();
         player.setOnPreparedListener(this);
-        controller = new MediaController(this){
+        controller = new PlayerController(this){
             @Override
             public void show(int timeout)
             {
                 super.show(0);
-            }
-            @Override
-            public boolean dispatchKeyEvent(KeyEvent event)
-            {
-                if (event.getKeyCode() == KeyEvent.KEYCODE_BACK)
-                    ((Activity) getContext()).finish();
-                return super.dispatchKeyEvent(event);
             }
         };
         try {
@@ -149,15 +145,9 @@ public class AudioPlayerActivity extends AppCompatActivity implements MediaPlaye
     }
 
     @Override
-    public int getAudioSessionId()
-    {
-        return 0;
-    }
-
-    @Override
     public void onPrepared(MediaPlayer mediaPlayer) {
         controller.setMediaPlayer(this);
-        controller.setAnchorView(findViewById(R.id.layout_audio_player));
+        controller.setAnchorView((FrameLayout) findViewById( R.id.layout_audio_player));
 
         handler.post(new Runnable() {
             public void run() {

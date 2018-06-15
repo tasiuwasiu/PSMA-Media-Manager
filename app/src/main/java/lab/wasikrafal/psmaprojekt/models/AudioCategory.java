@@ -32,7 +32,8 @@ public class AudioCategory
         return new AudioCategory[]
                 {
                         new AudioCategory("Notatki", "path2"),
-                        new AudioCategory("Blabla", "path1")
+                        new AudioCategory("Nagrania", "path1"),
+                        new AudioCategory("Przypomnienia", "path1")
                 };
     }
 }
