@@ -14,12 +14,10 @@ public class AudioCategory
 
     public String name;
 
-    public String imagePath;
 
-    public AudioCategory(String name, String imagePath)
+    public AudioCategory(String name)
     {
         this.name = name;
-        this.imagePath = imagePath;
     }
 
     public String toString()
@@ -31,9 +29,9 @@ public class AudioCategory
     {
         return new AudioCategory[]
                 {
-                        new AudioCategory("Notatki", "path2"),
-                        new AudioCategory("Nagrania", "path1"),
-                        new AudioCategory("Przypomnienia", "path1")
+                        new AudioCategory("Notatki"),
+                        new AudioCategory("Nagrania"),
+                        new AudioCategory("Przypomnienia")
                 };
     }
 }

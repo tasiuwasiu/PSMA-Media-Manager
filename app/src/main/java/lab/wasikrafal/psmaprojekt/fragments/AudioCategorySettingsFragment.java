@@ -131,7 +131,7 @@ public class AudioCategorySettingsFragment extends Fragment
             @Override
             public void onClick(View view)
             {
-                AudioCategory ac = new AudioCategory(name.getText().toString(), "path");
+                AudioCategory ac = new AudioCategory(name.getText().toString());
                 database.audioCategoryDAO().insertCategory(ac);
                 refresh();
                 dialog.dismiss();
